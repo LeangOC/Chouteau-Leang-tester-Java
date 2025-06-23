@@ -37,6 +37,9 @@ public class ParkingService {
 
                 Date inTime = new Date();
                 Ticket ticket = new Ticket();
+
+                int nbTickets = ticketDAO.getNbTicket(vehicleRegNumber);// Mon Etape 4
+
                 //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
                 //ticket.setId(ticketID);
                 ticket.setParkingSpot(parkingSpot);
@@ -46,6 +49,11 @@ public class ParkingService {
                 ticket.setOutTime(null);
                 ticketDAO.saveTicket(ticket);
                 System.out.println("Generated Ticket and saved in DB");
+
+                if (nbTickets > 0) { //mon Etap4
+                    System.out.println("Heureux de vous revoir ! En tant qu’utilisateur régulier de   notre parking, vous allez obtenir une remise de 5 %");
+                } // mon Etap4
+
                 System.out.println("Please park your vehicle in spot number:"+parkingSpot.getId());
                 System.out.println("Recorded in-time for vehicle number:"+vehicleRegNumber+" is:"+inTime);
             }
@@ -103,7 +111,14 @@ public class ParkingService {
             Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
             Date outTime = new Date();
             ticket.setOutTime(outTime);
-            fareCalculatorService.calculateFare(ticket);
+            //fareCalculatorService.calculateFare(ticket);
+            //  Vérifie si l'utilisateur est récurrent
+            boolean isRecurring = ticketDAO.getNbTicket(vehicleRegNumber) > 1;
+
+            //  Applique le calcul du tarif avec ou sans réduction
+            fareCalculatorService.calculateFare(ticket, isRecurring);
+
+
             if(ticketDAO.updateTicket(ticket)) {
                 ParkingSpot parkingSpot = ticket.getParkingSpot();
                 parkingSpot.setAvailable(true);
