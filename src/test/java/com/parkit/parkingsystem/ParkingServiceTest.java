@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
@@ -49,7 +48,7 @@ public class ParkingServiceTest {
             //Crée une place de parking occupée (id = 1, type = voiture, non disponible)
             ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
 
-            //Crée un ticket de stationnement indiquant que le véhicule est entré il y a 1 heure.
+            //Crée un ticket de stationnement indiquant que le véhicule est entré il y a UNE heure.
             Ticket ticket = new Ticket();
             ticket.setInTime(new Date(System.currentTimeMillis() - 60 * 60 * 1000));
             ticket.setParkingSpot(parkingSpot);
@@ -87,14 +86,15 @@ public class ParkingServiceTest {
     }
 
     @Test
-    public void testProcessIncomingVehicle() {
+    public void
+    testProcessIncomingVehicle() {
         // GIVEN
         try {
             when(inputReaderUtil.readSelection()).thenReturn(1); // 1 = CAR
             when(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR)).thenReturn(1);
             when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("XYZ123");
 
-            ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, true);
+            //ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, true);
             when(parkingSpotDAO.updateParking(any(ParkingSpot.class))).thenReturn(true);
 
             // WHEN
@@ -130,6 +130,7 @@ public class ParkingServiceTest {
             when(ticketDAO.getNbTicket("ABCDEF")).thenReturn(1);
 
             // WHEN
+
             parkingService.processExitingVehicle();
 
             // THEN

@@ -109,11 +109,11 @@
                     </dependency>
                 </dependencies>
 
-                <!-- configuration>
+                <!--configuration>
                     <excludes>
                       <exclude>**/*IT.java</exclude>
                     </excludes>
-                </configuration -->
+                </configuration-->
 
                 <configuration>
                     <excludes>
