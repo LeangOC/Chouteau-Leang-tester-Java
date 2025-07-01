@@ -91,14 +91,14 @@ public class ParkingDataBaseIT {
     @Test
     public void testParkingLotExitRecurringUser() {
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-        parkingService.processIncomingVehicle();
 
         // Première entrée
+        parkingService.processIncomingVehicle();
         Ticket firstTicket = ticketDAO.getTicket("ABCDEF");
         assertNotNull(firstTicket);
         firstTicket.setInTime(new Date(System.currentTimeMillis() - 2 * 60 * 60 * 1000));
         ticketDAO.updateInTimeOnly(firstTicket);
-       parkingService.processExitingVehicle();
+        parkingService.processExitingVehicle();
 
         // Deuxième entrée
         parkingService.processIncomingVehicle();
@@ -108,7 +108,6 @@ public class ParkingDataBaseIT {
         parkingService.processExitingVehicle();
 
 
-        //Ticket secondTicket;
         secondTicket = ticketDAO.getIdTicket(2);
         assertNotNull(secondTicket, "Le ticket récurrent doit exister.");
         assertTrue(secondTicket.getOutTime().after(secondTicket.getInTime()), "L'heure de sortie doit être après l'entrée.");

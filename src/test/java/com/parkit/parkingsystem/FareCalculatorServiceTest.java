@@ -8,9 +8,7 @@ import com.parkit.parkingsystem.service.FareCalculatorService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.Date;
 
 public class FareCalculatorServiceTest {
@@ -38,7 +36,8 @@ public class FareCalculatorServiceTest {
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket);
-        assertEquals(Fare.CAR_RATE_PER_HOUR, ticket.getPrice());
+        // j'ai inséré le delta 0.01 sinon des erreurs de compilation pourraient survenir
+        assertEquals(Fare.CAR_RATE_PER_HOUR, ticket.getPrice(), 0.01);
     }
 
     @Test
